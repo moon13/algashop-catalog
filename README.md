@@ -1,2 +1,1 @@
-# algashop-catalog
-Microserviço de Catalog
+# ems-algashop-product-catalog-inicial
