@@ -23,5 +23,6 @@ public class ProductDetailOutput {
     private Boolean inStock;
     private Boolean enabled;
     private UUID categoryId;
+    private CategoryMinimalOutput category;
     private String description;
 }
