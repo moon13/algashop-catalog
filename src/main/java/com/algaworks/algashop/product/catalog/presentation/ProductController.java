@@ -21,7 +21,7 @@ public class ProductController {
                 .description("A Gamer Notebook")
                 .regularPrice(new BigDecimal("1500.00"))
                 .salePrice(new BigDecimal("1000.00"))
-                .inStock(true)
+                .inStock(false)
                 .enabled(true)
                 .categoryId(UUID.randomUUID())
                 .category(CategoryMinimalOutput.builder()
