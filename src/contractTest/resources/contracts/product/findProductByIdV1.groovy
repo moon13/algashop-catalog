@@ -12,7 +12,7 @@ Contract.make {
     }
     response {
         status 200
-        headers {
+        headers { //PAREI EM  9:21 ====================================================================
             contentType 'application/json'
         }
         body([

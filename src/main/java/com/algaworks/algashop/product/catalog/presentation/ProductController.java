@@ -1,5 +1,12 @@
 package com.algaworks.algashop.product.catalog.presentation;
+import com.algaworks.algashop.product.catalog.application.product.management.ProductInput;
+import com.algaworks.algashop.product.catalog.application.product.management.ProductManagementApplicationService;
+import com.algaworks.algashop.product.catalog.application.product.query.CategoryMinimalOutput;
+import com.algaworks.algashop.product.catalog.application.product.query.PageModel;
+import com.algaworks.algashop.product.catalog.application.product.query.ProductDetailOutput;
+import com.algaworks.algashop.product.catalog.application.product.query.ProductQueryService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +17,12 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/products")
+@RequiredArgsConstructor
 public class ProductController {
+
+    private final ProductQueryService productQueryService;
+    private final ProductManagementApplicationService productManagementApplicationService;
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -39,22 +51,7 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public ProductDetailOutput findById(@PathVariable UUID productId) {
-        return ProductDetailOutput.builder()
-                .id(productId)
-                .addedAt(OffsetDateTime.now())
-                .name("Notebook X11")
-                .brand("Deep Diver")
-                .description("A Gamer Notebook")
-                .regularPrice(new BigDecimal("1500.00"))
-                .salePrice(new BigDecimal("1000.00"))
-                .inStock(true)
-                .enabled(true)
-                .categoryId(UUID.randomUUID())
-                .category(CategoryMinimalOutput.builder()
-                        .id(UUID.randomUUID())
-                        .name("Notebook")
-                        .build())
-                .build();
+        return productQueryService.findById(productId);
     }
 
     @GetMapping
