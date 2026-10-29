@@ -1,5 +1,6 @@
 package com.algaworks.algashop.product.catalog.contract.base;
 
+import com.algaworks.algashop.product.catalog.application.product.management.ProductInput;
 import com.algaworks.algashop.product.catalog.application.product.management.ProductManagementApplicationService;
 import com.algaworks.algashop.product.catalog.application.product.query.*;
 import com.algaworks.algashop.product.catalog.presentation.ProductController;
@@ -33,6 +34,9 @@ public class ProductBase {
 
     public static final UUID validProductId = UUID.fromString("fffe6ec2-7103-48b3-8e4f-3b58e43fb75a");
 
+    public static final UUID createdProductId = UUID.fromString("21651a12-b126-4213-ac21-19f66ff4642e");
+
+
     @BeforeEach
     void setUp() {
         RestAssuredMockMvc.mockMvc(MockMvcBuilders.webAppContextSetup(context)
@@ -43,6 +47,17 @@ public class ProductBase {
         mockValidOrderFindById();
 
         mockFilterProducts();
+
+        mockCreateProduct();
+    }
+
+    private void mockCreateProduct() {
+
+        Mockito.when(productManagementApplicationService.create(Mockito.any(ProductInput.class)))
+                .thenReturn(createdProductId);
+
+        Mockito.when(productQueryService.findById(createdProductId))
+                .thenReturn(ProductDetailOutputTestDataBuilder.aProduct().inStock(false).build());
     }
 
     private void mockValidOrderFindById(){
