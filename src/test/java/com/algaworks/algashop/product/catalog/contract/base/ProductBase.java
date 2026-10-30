@@ -1,5 +1,6 @@
 package com.algaworks.algashop.product.catalog.contract.base;
 
+import com.algaworks.algashop.product.catalog.application.ResourseNotFoundException;
 import com.algaworks.algashop.product.catalog.application.product.management.ProductInput;
 import com.algaworks.algashop.product.catalog.application.product.management.ProductManagementApplicationService;
 import com.algaworks.algashop.product.catalog.application.product.query.*;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @WebMvcTest(controllers = ProductController.class)
@@ -34,7 +36,9 @@ public class ProductBase {
 
     public static final UUID validProductId = UUID.fromString("fffe6ec2-7103-48b3-8e4f-3b58e43fb75a");
 
-    public static final UUID createdProductId = UUID.fromString("21651a12-b126-4213-ac21-19f66ff4642e");
+    public static final UUID createdProductId = UUID.fromString("f7c6843f-465c-476d-9a9b-4783bde4dc5e");
+
+    public static final UUID invalidProductId = UUID.fromString("21651a12-b126-4213-ac21-19f66ff4642e");
 
 
     @BeforeEach
@@ -44,11 +48,20 @@ public class ProductBase {
 
         RestAssuredMockMvc.enableLoggingOfRequestAndResponseIfValidationFails();
 
-        mockValidOrderFindById();
+        mockValidProductFindById();
 
         mockFilterProducts();
 
         mockCreateProduct();
+
+        mockInvalidProductFindById();
+    }
+
+    private void mockInvalidProductFindById() {
+
+        Mockito.when(productQueryService.findById(invalidProductId))
+                .thenThrow(new ResourseNotFoundException());
+
     }
 
     private void mockCreateProduct() {
@@ -60,7 +73,7 @@ public class ProductBase {
                 .thenReturn(ProductDetailOutputTestDataBuilder.aProduct().inStock(false).build());
     }
 
-    private void mockValidOrderFindById(){
+    private void mockValidProductFindById(){
         Mockito.when(productQueryService.findById(validProductId))
                 .thenReturn(ProductDetailOutputTestDataBuilder.aProduct().id(validProductId).build());
 
