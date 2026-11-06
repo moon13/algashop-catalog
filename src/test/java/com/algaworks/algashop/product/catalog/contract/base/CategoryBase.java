@@ -1,6 +1,7 @@
 package com.algaworks.algashop.product.catalog.contract.base;
 
 import com.algaworks.algashop.product.catalog.application.PageModel;
+import com.algaworks.algashop.product.catalog.application.ResourseNotFoundException;
 import com.algaworks.algashop.product.catalog.application.category.management.CategoryInput;
 import com.algaworks.algashop.product.catalog.application.category.management.CategoryManagementService;
 import com.algaworks.algashop.product.catalog.application.category.query.CategoryDetailOutput;
@@ -36,6 +37,8 @@ public class CategoryBase {
 
     public static final UUID createdCategoryId = UUID.randomUUID();
 
+    public static final UUID notFoundCategoryId = UUID.fromString("7f3a9c21-8b64-4d2e-a571-3c9e82b6f410");
+
     @BeforeEach
     void setUp() {
         RestAssuredMockMvc.mockMvc(MockMvcBuilders.webAppContextSetup(context)
@@ -67,5 +70,9 @@ public class CategoryBase {
 
         Mockito.when(categoryQueryService.findById(createdCategoryId))
                 .thenReturn(CategoryOutputTestDataBuilder.aCategory().id(createdCategoryId).build());
+
+        Mockito.when(categoryQueryService.findById(notFoundCategoryId))
+                .thenThrow(new ResourseNotFoundException());
+
     }
 }
